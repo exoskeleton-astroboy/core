@@ -318,10 +318,10 @@ astroboy-router@2.2.1:
     reflect-metadata "0.1.12"
     tslib "1.9.3"
 
-astroboy@1.1.0-beta.2:
-  version "1.1.0-beta.2"
-  resolved "https://registry.npmjs.org/astroboy/-/astroboy-1.1.0-beta.2.tgz#24d78976ba8ce48cb4109b356b63482e307862af"
-  integrity sha512-7+GdTzpwOCTzmR1RbNiErZQCPdAVQW8FEHnz9VU+HAO7rodvccNoDsfVBxsS8Jg/+3pTug4PlxUuxRh6gaF4yQ==
+astroboy@1.1.0-beta.3:
+  version "1.1.0-beta.3"
+  resolved "https://registry.npmjs.org/astroboy/-/astroboy-1.1.0-beta.3.tgz#9e3dad46a578e747f836ed18c2b4a27d7e420800"
+  integrity sha512-9IdF/wLyyn/tpQPdaLU1WjKxv6g00iALiai3gwcj3skz1l8sVX05w6EfN0kgV1zMJUBpAKQGTxW1GV8Jmz3CWw==
   dependencies:
     "@types/fs-extra" "^5.1.0"
     "@types/koa" "^2.0.46"
