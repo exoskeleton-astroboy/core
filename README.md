@@ -101,11 +101,14 @@ module.exports = {
 
 #### 4. 启动
 
-```
-# 本地安装astrpboy.ts
-npx atc dev --inspect --tsconfig app/tsconfig.json
-# 全局装过astrpboy.ts
-atc dev --inspect --tsconfig app/tsconfig.json
+> 需要安装[@exoskeleton/cli](https://github.com/exoskeleton-astroboy/cli.git)使用
+
+```zsh
+# cmd：exo 或者 exoskeleton
+# 本地安装@exoskeleton/core
+npx exo dev --inspect --tsconfig app/tsconfig.json
+# 全局装过@exoskeleton/core
+exo dev --inspect --tsconfig app/tsconfig.json
 ```
 
 ### 开发姿势
