@@ -1,0 +1,39 @@
+{
+  "name": "@exoskeleton/core",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "repository": "https://github.com/exoskeleton-astroboy/core.git",
+  "author": "Big Mogician <bigmogician@outlook.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@bigmogician/publisher": "^1.0.11",
+    "astroboy": "1.1.0-beta.1",
+    "koa": "^2.7.0",
+    "ts-node": "7.0.1",
+    "tslint": "^5.18.0",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "@bonbons/di": "1.4.1",
+    "@types/camelcase": "4.1.0",
+    "@types/decamelize": "1.2.0",
+    "@types/events": "^3.0.0",
+    "@types/koa": "^2.0.48",
+    "@types/koa-router": "^7.0.35",
+    "@types/lodash": "^4.14.118",
+    "@types/node": "^10.12.10",
+    "@types/nunjucks": "^3.1.0",
+    "@types/uuid": "^3.4.4",
+    "astroboy-router": "2.2.1",
+    "camelcase": "^4.1.0",
+    "cerialize": "^0.1.18",
+    "chalk": "2.4.1",
+    "decamelize": "1.2.0",
+    "lodash": "^4.17.11",
+    "nunjucks": "^3.1.6",
+    "tsconfig-paths": "^3.7.0",
+    "tslib": "^1.9.3",
+    "uuid": "^3.3.2"
+  }
+}

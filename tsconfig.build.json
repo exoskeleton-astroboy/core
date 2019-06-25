@@ -1,0 +1,5 @@
+{
+  "compileOnSave": true,
+  "extends": "./tsconfig.json",
+  "include": ["scripts"]
+}

@@ -1,0 +1,32 @@
+{
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "rules": {
+    "object-literal-sort-keys": false,
+    "no-console": {
+      "severity": "warning",
+      "options": ["log"]
+    },
+    "no-implicit-dependencies": [true, "dev", []],
+    "no-submodule-imports": [
+      true,
+      "lodash",
+      "uuid",
+      "@@bonbons",
+      "@bigmogician/publisher",
+      "astroboy-router"
+    ],
+    "no-unused-expression": false,
+    "callable-types": false,
+    "unified-signatures": false,
+    "no-angle-bracket-type-assertion": false,
+    "no-object-literal-type-assertion": false,
+    "max-classes-per-file": false,
+    "no-string-literal": false,
+    "array-type": false,
+    "no-empty": false,
+    "curly": false,
+    "no-empty-interface": false,
+    "no-unnecessary-initializer": false,
+    "prefer-conditional-expression": false
+  }
+}
