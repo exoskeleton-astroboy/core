@@ -10,6 +10,7 @@
 
 ## 已经实现的功能
 
+- CLI 编译工具[ 实现：[@exoskeleton/cli](https://github.com/exoskeleton-astroboy/cli) ]
 - 高性能依赖注入[ 实现：[@bonbons/di](https://www.npmjs.com/package/@bonbons/di) ]
 - 控制器声明式路由[ 实现：[astroboy-router](https://www.npmjs.com/package/astroboy-router) ]
 - 可扩展的注入式模版引擎
@@ -33,6 +34,8 @@
 - [GitHub Pages](https://ws-node.github.io/astroboy.ts) - @exoskeleton/core 文档
 
 ### 安装
+
+> 先安装 @exoskeleton/cli 构建工具
 
 ```zsh
 npm install astroboy @exoskeleton/core
@@ -117,7 +120,7 @@ exo dev --inspect --tsconfig app/tsconfig.json
 
 @exoskeleton/core 开放了一个配置文件，用来简化 cli 参数的使用，类似 webpack，可以使用--config 参数修改配置文件的名字。
 
-> atc.config.js - 一个简单的配置文件
+> exoskeleton.config.js - 一个简单的配置文件
 
 ```javascript
 const path = require("path");
@@ -129,7 +132,7 @@ module.exports = {
   transpile: true,
   debug: "*",
   mock: "http://127.0.0.1:8001",
-  // atc router 的命令配置
+  // exoskeleton router 的命令配置
   // 编译生成routers，不再需要手动书写routers文件
   routers: {
     enabled: true,
@@ -138,7 +141,7 @@ module.exports = {
     filetype: "ts",
     details: true
   },
-  // atc-cli监控的文件修改列表，自动重启node服务
+  // exoskeleton-cli监控的文件修改列表，自动重启node服务
   watch: [
     path.join(__dirname, "app/**/*.*"),
     path.join(__dirname, "config/**/*.*"),
@@ -146,7 +149,7 @@ module.exports = {
   ],
   // 忽略的文件列表
   ignore: [],
-  // atc config 的命令配置
+  // exoskeleton config 的命令配置
   // 编译ts配置文件，支持DI能力 @1.1.0 引入
   configCompiler: {
     enabled: true,
@@ -254,11 +257,11 @@ export = buildRouter(TEST, "test", "/v1");
 
 ##### routers 预处理模式
 
-- 使用 `@exoskeleton/core` 提供的命令行工具
+- 使用 `@exoskeleton/cli` 提供的命令行工具
 
 ```bash
 # 在开发启动或者生产打包前确保执行即可
-./node_modules/.bin/atc router --always --filetype ts
+npx exo router --always --filetype ts
 ```
 
 到此一个完整的业务级别的 router 构造完成了。
@@ -388,7 +391,7 @@ const path = require("path");
 // 不相关的配置信息已经隐藏
 module.exports = {
   tsconfig: "tsconfig.json",
-  // atc middleware 的命令配置
+  // exo middleware 的命令配置
   // 编译ts配置文件，支持DI能力 @1.1.03-rc.16 引入
   middlewareCompiler: {
     enabled: true, // 默认：false
@@ -403,12 +406,12 @@ module.exports = {
 
 ```typescript
 import { AstroboyContext } from "@exoskeleton/core";
-import * as atc from "@exoskeleton/core";
+import * as atexoskeletonc from "@exoskeleton/core";
 import { testA } from "../app/utils/testA";
 
 export default async function testMiddleware(
   context: AstroboyContext,
-  injector: atc.InjectService
+  injector: exoskeleton.InjectService
 ) {
   console.log(new Date().getTime());
   console.log(context.ctx.url);
@@ -417,7 +420,7 @@ export default async function testMiddleware(
 }
 ```
 
-执行命令： `atc middleware --force`
+执行命令： `exoskeleton middleware --force`
 
 得到结果：
 
@@ -446,9 +449,9 @@ export = () => injectScope(async ({ injector, next }: IMiddlewaresScope) => {
 
 在 `1.1.0` 版本引入配置文件编译能力，支持使用 ts 来书写 config，同时可以将类型友好的服务化配置引入 DI。
 
-使用 `atc config --force` ，强制使用 ts 配置文件夹，覆盖原始的 config
+使用 `exoskeleton config --force` ，强制使用 ts 配置文件夹，覆盖原始的 config
 
-##### 1.配置 atc.config.js
+##### 1.配置 exoskeleton.config.js
 
 ```javascript
 const path = require("path");
@@ -456,7 +459,7 @@ const path = require("path");
 // 不相关的配置信息已经隐藏
 module.exports = {
   tsconfig: "tsconfig.json",
-  // atc config 的命令配置
+  // exoskeleton config 的命令配置
   // 编译ts配置文件，支持DI能力 @1.1.0 引入
   configCompiler: {
     enabled: true, // 默认：false
@@ -552,7 +555,7 @@ export default () => (<Partial<IConfigs>{
 });
 ```
 
-完成以后，在应用启动时执行：`atc config --force` :
+完成以后，在应用启动时执行：`exoskeleton config --force` :
 
 > config/config.default.js
 
