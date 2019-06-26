@@ -1,6 +1,6 @@
 {
   "name": "@exoskeleton/core",
-  "version": "0.0.1-rc.1561453730725",
+  "version": "0.0.2",
   "main": "src/index.ts",
   "repository": "https://github.com/exoskeleton-astroboy/core.git",
   "author": "Big Mogician <bigmogician@outlook.com>",
