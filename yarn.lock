@@ -18,10 +18,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@bigmogician/publisher@^1.0.11":
-  version "1.0.11"
-  resolved "https://registry.npmjs.org/@bigmogician/publisher/-/publisher-1.0.11.tgz#82907ef06025f5f26a9a351a44e83c87a34b1140"
-  integrity sha512-ztm5Dutis+CQ09FoJy9YLjtAHfeQqK2ItJgVpMPghtUX202tvAQ834bjP94gy2Y4Otvbp8zJ39Ar6evmZ29V4Q==
+"@bigmogician/publisher@^1.0.12":
+  version "1.0.12"
+  resolved "https://registry.npmjs.org/@bigmogician/publisher/-/publisher-1.0.12.tgz#b4812572d92ca3c90bc14c1bc7075360caaa38f0"
+  integrity sha512-Jw2UHQm7g/WOcn+dhekQ5FzeeHjfob0doW/SQjbLuERaRIarfucxeEV8XuJuT8g0LMzBBAXdLCuXKItONJc1bQ==
   dependencies:
     chalk "^2.4.2"
     commander "^2.19.0"
@@ -318,10 +318,10 @@ astroboy-router@2.2.1:
     reflect-metadata "0.1.12"
     tslib "1.9.3"
 
-astroboy@1.1.0-beta.4:
-  version "1.1.0-beta.4"
-  resolved "https://registry.npmjs.org/astroboy/-/astroboy-1.1.0-beta.4.tgz#586e1c07ecf8fb364a243c52ac44d98b87913859"
-  integrity sha512-Gr6nCEK5hOeFw83tlaZYmRtw04DCqnGXM2xs1HZ7BgLHaMmIN0JLUbM0Ot98VpipefIDSsIv9ndP+4HrMIbUgw==
+astroboy@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/astroboy/-/astroboy-2.0.0.tgz#3b7ac565f2c8434f78fd876797a049c85f413cd0"
+  integrity sha512-ysmU9AOYrNICdv9NgkNQCSM05IVtqb5mz5wXivW+kP0yJOqkZM2Az+g7+ix17fDyewXeGFT8sPTQXUzEQpjxOA==
   dependencies:
     "@types/fs-extra" "^5.1.0"
     "@types/koa" "^2.0.46"
@@ -340,6 +340,7 @@ astroboy@1.1.0-beta.4:
     methods "1.1.2"
     path-matching "0.0.2"
     path-to-regexp "2.2.1"
+    tslib "1.9.3"
     xss "0.3.7"
 
 async-each@^1.0.1:
@@ -2227,15 +2228,15 @@ type-is@^1.5.5, type-is@^1.6.14, type-is@^1.6.16:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
-typescript@3.4.5:
-  version "3.4.5"
-  resolved "https://registry.npmjs.org/typescript/-/typescript-3.4.5.tgz#2d2618d10bb566572b8d7aad5180d84257d70a99"
-  integrity sha512-YycBxUb49UUhdNMU5aJ7z5Ej2XGmaIBL0x34vZ82fn3hGvD+bgrMrVDpatgz2f7YxUMJxMkbWxJZeAvDxVe7Vw==
-
 typescript@^2.5.0:
   version "2.9.2"
   resolved "https://registry.npmjs.org/typescript/-/typescript-2.9.2.tgz#1cbf61d05d6b96269244eb6a3bce4bd914e0f00c"
   integrity sha512-Gr4p6nFNaoufRIY4NMdpQRNmgxVIGMs4Fcu/ujdYk3nAZqk7supzBE9idmvfZIlH/Cuj//dvi+019qEue9lV0w==
+
+typescript@^3.4.5:
+  version "3.6.3"
+  resolved "https://registry.npmjs.org/typescript/-/typescript-3.6.3.tgz#fea942fabb20f7e1ca7164ff626f1a9f3f70b4da"
+  integrity sha512-N7bceJL1CtRQ2RiG0AQME13ksR7DiuQh/QehubYcghzv20tnh+MQnQIuJddTmsbqYj+dztchykemz0zFzlvdQw==
 
 union-value@^1.0.0:
   version "1.0.1"

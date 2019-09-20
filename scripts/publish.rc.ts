@@ -3,7 +3,8 @@ import { config } from "./pkg";
 
 run({
   ...config,
-  rc: true,
-  useStamp: true,
+  rc: "beta",
+  add: 1,
+  useStamp: false,
   debug: false
 });

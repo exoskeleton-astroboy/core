@@ -1,3 +1,4 @@
+import { SCOPE_TRACE_OPTIONS } from "../options";
 import { GLOBAL_ERROR } from "../options/errors.options";
 import { SimpleLogger } from "../plugins/simple-logger";
 import { Configs } from "../services/Configs";
@@ -22,7 +23,7 @@ export const serverInit = async (ctx: IContext, next: () => Promise<void>) => {
     console.error(error);
     await tryCatchGlobalError(injector, error);
   } finally {
-    disposeRequestScope(scope, logger, injector);
+    disposeRequestScope(injector, scope, logger);
   }
 };
 
@@ -30,10 +31,18 @@ function initRequestScope(ctx: IContext) {
   const scopeId = setScopeId(ctx);
   GlobalDI.createScope(scopeId, { ctx });
   const injector = GlobalDI.get(InjectService, scopeId);
-  const logger = injector.get(SimpleLogger);
-  const scope = injector.get(Scope);
-  scope["init"](scopeId)["begin"]();
-  logger.trace(`scope ${setColor("cyan", getShortScopeId(scopeId))} is init.`);
+  const configs = GlobalDI.get(Configs, scopeId);
+  const scopeOpt = configs.get(SCOPE_TRACE_OPTIONS);
+  let scope!: Scope;
+  let logger!: SimpleLogger;
+  if (scopeOpt.enabled) {
+    scope = injector.get(Scope);
+    logger = injector.get(SimpleLogger);
+    scope["init"](scopeId)["begin"]();
+    logger.trace(
+      `scope ${setColor("cyan", getShortScopeId(scopeId))} is init.`
+    );
+  }
   return { injector, scope, logger };
 }
 
@@ -41,26 +50,29 @@ async function tryCatchGlobalError(injector: InjectService, error: any) {
   const configs = injector.get(Configs);
   const { handler } = configs.get(GLOBAL_ERROR);
   if (handler) {
-    await handler(error, injector, configs);
+    return handler(error, injector, configs);
   }
 }
 
 function disposeRequestScope(
-  scope: Scope,
-  logger: SimpleLogger,
-  injector: InjectService
+  injector: InjectService,
+  scope?: Scope,
+  logger?: SimpleLogger
 ) {
-  scope["end"]();
-  const duration = scope.duration();
-  logger.trace(
-    `scope ${setColor(
-      "cyan",
-      getShortScopeId(injector.scopeId)
-    )} is [${setColor(
-      duration > 500 ? "red" : duration > 200 ? "yellow" : "green",
-      duration
-    )} ms] disposed.`
-  );
+  if (scope) {
+    scope["end"]();
+    const duration = scope.duration();
+    logger &&
+      logger.trace(
+        `scope ${setColor(
+          "cyan",
+          getShortScopeId(injector.scopeId)
+        )} is [${setColor(
+          duration > 500 ? "red" : duration > 200 ? "yellow" : "green",
+          duration
+        )} ms] disposed.`
+      );
+  }
   injector["INTERNAL_dispose"] && injector["INTERNAL_dispose"]();
 }
 

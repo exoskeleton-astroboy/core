@@ -16,9 +16,11 @@ import {
   defaultGlobalError,
   defaultJsonResultOptions,
   defaultRenderResultOptions,
+  defaultScopeTraceOptions,
   GLOBAL_ERROR,
   JSON_RESULT_OPTIONS,
   RENDER_RESULT_OPTIONS,
+  SCOPE_TRACE_OPTIONS,
   STATIC_RESOLVER
 } from "./options";
 import {
@@ -381,6 +383,7 @@ export class Server {
     this.option(STATIC_RESOLVER, TypedSerializer);
     this.option(NUNJUNKS_OPTIONS, defaultNunjunksOptions);
     this.option(SIMPLE_LOGGER_OPTIONS, defaultSimpleLoggerOptions);
+    this.option(SCOPE_TRACE_OPTIONS, defaultScopeTraceOptions);
     this.option(GLOBAL_ERROR, defaultGlobalError);
   }
 

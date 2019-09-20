@@ -27,13 +27,13 @@ export const Colors = {
 };
 
 export type PartReset<T, SKIP, ADD extends {} = {}> = {
-  [key in Exclude<keyof (T & ADD), keyof SKIP>]: (T & ADD)[key]
+  [key in Exclude<keyof (T & ADD), keyof SKIP>]: (T & ADD)[key];
 };
 
 export type ChangeReturn<T, RETURN> = {
   [key in keyof T]: T[key] extends (...args: infer P) => infer R
     ? (...params: P) => RETURN
-    : T[key]
+    : T[key];
 };
 
 export function fullText(v: any, n = 24) {
@@ -52,7 +52,12 @@ export const GlobalDI = new DIContainer<ScopeID, { ctx: any }>();
 
 export function setScopeId(ctx: IContext) {
   const state = ctx.state || (ctx.state = {});
-  return (state["$$scopeId"] = uuid());
+  return (state["$$scopeId"] = Symbol(""));
+}
+
+export function setScopeTraceId(ctx: IContext) {
+  const state = ctx.state || (ctx.state = {});
+  return (state["$$scopeTraceId"] = uuid());
 }
 
 export function getScopeId(ctx: IContext, short?: boolean): ScopeID {
