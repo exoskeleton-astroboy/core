@@ -1,8 +1,8 @@
 import { Constructor, DIContainer } from "@bonbons/di";
-import { Server } from "./server";
+import { IExoServer } from "./server/contract";
 import { ChangeReturn, PartReset } from "./utils";
 
-type ServerBundle = PartReset<Server, { run: any }>;
+type ServerBundle = PartReset<IExoServer, { run: any }>;
 type InnerBundle = ServerBundle & {
   "@global": DIContainer<any>;
   "@options": [any, any?][];
