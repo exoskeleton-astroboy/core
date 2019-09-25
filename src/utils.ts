@@ -87,9 +87,10 @@ export function createInstance<T>(target: Constructor<T>, ctx: IContext) {
 export function optionAssign(
   configs: ConfigsCollection,
   token: any,
-  newValue: any
+  newValue: any,
+  mergeAllow = true
 ) {
-  return isCustomClassInstance(newValue || {})
+  return !mergeAllow || isCustomClassInstance(newValue || {})
     ? newValue
     : merge({}, configs.get(token) || {}, newValue);
 }
