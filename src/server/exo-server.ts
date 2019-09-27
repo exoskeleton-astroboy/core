@@ -288,7 +288,7 @@ export class ExoServer implements IExoServer {
             this.resolveBundles();
             this.resolveInjections();
           },
-          () => onStart && onStart(app, { get: this.di.get.bind(this) })
+          () => onStart && onStart(app, { get: this.di.get.bind(this.di) })
         ]);
       })
       .on("error", (error: any, ctx: any) => {
