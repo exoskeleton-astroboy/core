@@ -57,8 +57,9 @@ export function onBuild(
 ) {
   const { lifeCycle, extensions } = context.router;
   const { pipes, extensions: routeExt } = context.route;
-  const closeOnThrows =
-    routeExt.pipeCloseOnThrows || extensions.pipeCloseOnThrows || false;
+  let closeOnThrows =
+    routeExt.pipeCloseOnThrows || extensions.pipeCloseOnThrows;
+  if (closeOnThrows === undefined) closeOnThrows = true;
   const needPipe = pipes.rules.length > 0;
   const needOnPipe = (lifeCycle.onPipes || []).length > 0;
   const needOnEnter = (lifeCycle.onEnter || []).length > 0;
