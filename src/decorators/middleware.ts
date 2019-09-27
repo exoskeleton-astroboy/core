@@ -1,12 +1,22 @@
+import { ReadonlyDIContainer } from "@bonbons/di";
 import { CustomPipe, IPipeProcess } from "astroboy-router";
+import { PipeErrorHandler } from "astroboy-router/metadata";
 import { tryGetRoute, tryGetRouter } from "astroboy-router/utils";
+import { INTERNAL_INJECTOR } from "../core";
 
-export type IMiddleware = IPipeProcess<void>;
+export type IMiddleware<T = any> = (
+  injector: ReadonlyDIContainer
+) => Promise<T> | T;
+
+export type IMiddlewareHandler = (
+  injector: ReadonlyDIContainer,
+  error: Error
+) => void;
 
 export interface IMiddlewareMeta {
   override: boolean;
   closeOnThrows: boolean;
-  onError(context: any, error: Error): void;
+  onError: IMiddlewareHandler;
 }
 
 /**
@@ -18,7 +28,7 @@ export interface IMiddlewareMeta {
  * @param {Partial<IMiddlewareContext>} [meta={}]
  */
 export function Middlewares(
-  rules: IPipeProcess<void>[],
+  rules: IMiddleware<void>[],
   meta: Partial<IMiddlewareMeta> = {}
 ) {
   return function middlewares(
@@ -28,8 +38,8 @@ export function Middlewares(
   ) {
     if (!propertyKey) {
       const { pipes, extensions: ext } = tryGetRouter(target.prototype);
-      pipes.rules = [...pipes.rules, ...(rules || [])];
-      pipes.handler = <any>meta.onError || pipes.handler;
+      pipes.rules = [...pipes.rules, ...(rules || []).map(i => wrapPipeFn(i))];
+      pipes.handler = wrapOnError(<any>meta.onError) || pipes.handler;
       ext.pipeCloseOnThrows = meta.closeOnThrows;
     } else {
       const router = tryGetRouter(target);
@@ -39,10 +49,10 @@ export function Middlewares(
       );
       const { override = false, onError, closeOnThrows } = meta;
       return CustomPipe({
-        rules: <any>rules,
+        rules: <any>rules.map(i => wrapPipeFn(i)),
         override,
         zIndex: "push",
-        handler: <any>onError || pipes.handler,
+        handler: wrapOnError(<any>onError) || pipes.handler,
         extensions: {
           ...ext,
           pipeCloseOnThrows: closeOnThrows || ext.pipeCloseOnThrows
@@ -50,6 +60,17 @@ export function Middlewares(
       })(target, propertyKey, descriptor);
     }
   };
+}
+
+function wrapOnError(
+  handler?: IMiddlewareHandler
+): PipeErrorHandler | undefined {
+  if (!handler) return undefined;
+  return (ctor: any, error: any) => handler(ctor[INTERNAL_INJECTOR], error);
+}
+
+function wrapPipeFn(handler: IMiddleware<any>): IPipeProcess<any> {
+  return (ctor: any) => handler(ctor[INTERNAL_INJECTOR]);
 }
 
 // tslint:disable-next-line: no-namespace
