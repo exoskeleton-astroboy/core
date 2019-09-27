@@ -1,10 +1,11 @@
-import { InjectDIToken, ReadonlyDIContainer, ScopeID } from "@bonbons/di";
+import { InjectDIToken, InjectToken, ScopeID } from "@bonbons/di";
 
 // tslint:disable-next-line: no-namespace
 export namespace InjectService {
   // tslint:disable-next-line: interface-name
-  export interface Contract extends ReadonlyDIContainer {
+  export interface Contract {
     readonly scopeId: ScopeID;
+    get<T>(token: InjectToken<T>): T;
   }
 }
 

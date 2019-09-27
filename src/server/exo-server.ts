@@ -1,10 +1,9 @@
 import {
-  AbstractType,
   Constructor,
   DIContainer,
-  ImplementType,
   Injector,
   InjectScope,
+  ReadonlyDIContainer,
   ScopeID
 } from "@bonbons/di";
 import Astroboy from "astroboy";
@@ -40,7 +39,7 @@ import { Context } from "../services/Context";
 import { InjectService } from "../services/Injector";
 import { Render } from "../services/Render";
 import { Scope } from "../services/Scope";
-import { GlobalDI, optionAssign } from "../utils";
+import { getScopeId, GlobalDI, optionAssign } from "../utils";
 import { DIPair, IExoServer } from "./contract";
 import { logActions } from "./log";
 
@@ -109,8 +108,11 @@ export class ExoServer implements IExoServer {
 
   public run(
     events?: Partial<{
-      onStart: (app: any) => void;
-      onError: (error: any, ctx: any) => void;
+      onStart: (
+        app: any,
+        injector: Readonly<ReadonlyDIContainer<ScopeID>>
+      ) => void;
+      onError: (error: any, injector: InjectService) => void;
     }>
   ) {
     this.init();
@@ -265,8 +267,11 @@ export class ExoServer implements IExoServer {
 
   private startApp(
     events?: Partial<{
-      onStart: (app: any) => void;
-      onError: (error: any, ctx: any) => void;
+      onStart: (
+        app: any,
+        injector: Readonly<ReadonlyDIContainer<ScopeID>>
+      ) => void;
+      onError: (error: any, injector: InjectService) => void;
     }>
   ) {
     const { onStart = undefined, onError = undefined } = events || {};
@@ -283,11 +288,13 @@ export class ExoServer implements IExoServer {
             this.resolveBundles();
             this.resolveInjections();
           },
-          () => onStart && onStart(app)
+          () => onStart && onStart(app, { get: this.di.get.bind(this) })
         ]);
       })
       .on("error", (error: any, ctx: any) => {
-        onError && onError(error, ctx);
+        const scopeId = getScopeId(ctx);
+        const injector = this.di.get(InjectService, scopeId);
+        onError && onError(error, injector);
       });
   }
 

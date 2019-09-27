@@ -4,9 +4,11 @@ import {
   DIContainer,
   IConfigCollection,
   ImplementType,
+  ReadonlyDIContainer,
   ScopeID
 } from "@bonbons/di";
 import { SimpleLogger } from "../plugins/simple-logger";
+import { InjectService } from "../services/Injector";
 import { IConfigToken } from "../typings/IConfigs";
 
 export type DIPair = [any, any];
@@ -57,8 +59,11 @@ export interface IExoServer {
   ): this;
   run(
     events?: Partial<{
-      onStart: (app: any) => void;
-      onError: (error: any, ctx: any) => void;
+      onStart: (
+        app: any,
+        injector: Readonly<ReadonlyDIContainer<ScopeID>>
+      ) => void;
+      onError: (error: any, injector: InjectService.Contract) => void;
     }>
   ): void;
 }
