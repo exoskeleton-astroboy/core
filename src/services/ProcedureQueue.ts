@@ -2,7 +2,7 @@ import { Constructor, InjectScope } from "@bonbons/di";
 import { Injectable } from "../decorators/injectable";
 
 export interface IBasicProcedure {
-  run(): Promise<void>;
+  run(): void | Promise<void>;
 }
 
 // tslint:disable-next-line: no-namespace
