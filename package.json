@@ -21,7 +21,7 @@
     "cerialize": "^0.1.18",
     "chalk": "2.4.1",
     "decamelize": "1.2.0",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "nunjucks": "^3.1.6",
     "tsconfig-paths": "^3.7.0",
     "tslib": "^1.9.3",
