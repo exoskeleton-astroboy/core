@@ -8,6 +8,7 @@ export * from "./services/BaseClass";
 export * from "./services/AstroboyContext";
 export * from "./services/Render";
 export * from "./services/ConfigReader";
+export * from "./services/ProcedureQueue";
 export * from "./server";
 export * from "./configs";
 export * from "./typings/IConfigs";

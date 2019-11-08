@@ -13,6 +13,7 @@ import { STATIC_RESOLVER } from "../options/typed-serialize.options";
 import { Configs } from "../services/Configs";
 import { Context } from "../services/Context";
 import { InjectService } from "../services/Injector";
+import { IBasicProcedure, ProcedureQueue } from "../services/ProcedureQueue";
 import { IContext } from "../typings/IContext";
 import { ICommonResultType, IResult } from "../typings/IResult";
 
@@ -68,6 +69,12 @@ export function onBuild(
   const hooks = createLifeHooks(context);
   const routeLogic = createRouteMethodInvoke(context, descriptor.value);
   descriptor.value = async function() {
+    const injector: InjectService = (<any>this)[InjectorGetter];
+    const queues = injector.get<ProcedureQueue>(ProcedureQueue).procedures;
+    for (const ctor of queues) {
+      const procedure: IBasicProcedure = injector.get(ctor);
+      await procedure.run();
+    }
     if (needOnPipe) await hooks.runOnPipes.call(this);
     if (needPipe) {
       const shouNext = await pipeOverrideInvokes.call(this, pipeContext);

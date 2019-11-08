@@ -37,6 +37,7 @@ import { ConfigReader } from "../services/ConfigReader";
 import { Configs, RealConfigCollection } from "../services/Configs";
 import { Context } from "../services/Context";
 import { InjectService } from "../services/Injector";
+import { ProcedureQueue } from "../services/ProcedureQueue";
 import { Render } from "../services/Render";
 import { Scope } from "../services/Scope";
 import { getScopeId, GlobalDI, optionAssign } from "../utils";
@@ -57,6 +58,7 @@ export class ExoServer implements IExoServer {
   private di = GlobalDI;
   private configs = new RealConfigCollection();
   private logger!: SimpleLogger;
+  private queues = new ProcedureQueue();
 
   private preSingletons: DIPair[] = [];
   private preScopeds: DIPair[] = [];
@@ -104,6 +106,11 @@ export class ExoServer implements IExoServer {
 
   public unique(...args: any[]): this {
     return this.preInject(InjectScope.New, <any>args);
+  }
+
+  public use(...procedure: Constructor<any>[]): this {
+    this.queues.push(...procedure);
+    return this;
   }
 
   public run(
@@ -263,6 +270,7 @@ export class ExoServer implements IExoServer {
     this.initConfigCollection();
     this.initInjectService();
     this.initContextProvider();
+    this.initProcedureQueue();
   }
 
   private startApp(
@@ -413,5 +421,9 @@ export class ExoServer implements IExoServer {
     this.singleton(Configs, () => ({
       get: this.configs.get.bind(this.configs)
     }));
+  }
+
+  private initProcedureQueue() {
+    this.singleton(ProcedureQueue, this.queues);
   }
 }

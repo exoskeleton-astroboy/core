@@ -57,6 +57,7 @@ export interface IExoServer {
     token: AbstractType<TToken>,
     srv: TImplement
   ): this;
+  use<TInject>(...procedure: Constructor<TInject>[]): this;
   run(
     events?: Partial<{
       onStart: (

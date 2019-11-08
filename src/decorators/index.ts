@@ -15,3 +15,4 @@ export {
   HttpMethod
 } from "./route";
 export { ReactiveSingleton, Watch } from "./singleton";
+export { Procedure } from "./procedure";
