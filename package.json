@@ -1,6 +1,6 @@
 {
   "name": "@exoskeleton/core",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "src/index.ts",
   "repository": "https://github.com/exoskeleton-astroboy/core.git",
   "author": "Big Mogician <bigmogician@outlook.com>",
@@ -16,7 +16,6 @@
     "@types/node": "^10.12.10",
     "@types/nunjucks": "^3.1.0",
     "@types/uuid": "^3.4.4",
-    "astroboy-router": "2.2.1",
     "camelcase": "^4.1.0",
     "cerialize": "^0.1.18",
     "chalk": "2.4.1",
@@ -30,6 +29,7 @@
   "devDependencies": {
     "@bigmogician/publisher": "^1.0.12",
     "astroboy": "^2.0.0",
+    "astroboy-router": "^2.2.1",
     "koa": "^2.5.0",
     "ts-node": "7.0.1",
     "tslint": "^5.18.0",
@@ -37,6 +37,7 @@
     "typescript": "^3.4.5"
   },
   "peerDependencies": {
-    "astroboy": "^2.0.0"
+    "astroboy": "^2.0.0",
+    "astroboy-router": "^2.2.1"
   }
 }
