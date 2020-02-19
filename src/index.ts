@@ -6,6 +6,7 @@ export * from "./services/Injector";
 export * from "./services/Context";
 export * from "./services/BaseClass";
 export * from "./services/AstroboyContext";
+export * from "./services/AstroboyApp";
 export * from "./services/Render";
 export * from "./services/ConfigReader";
 export * from "./services/ProcedureQueue";

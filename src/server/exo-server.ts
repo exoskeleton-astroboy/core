@@ -43,6 +43,7 @@ import { Scope } from "../services/Scope";
 import { getScopeId, GlobalDI, optionAssign } from "../utils";
 import { DIPair, IExoServer } from "./contract";
 import { logActions } from "./log";
+import { AstroboyApp } from "../services/AstroboyApp";
 
 // tslint:disable: member-ordering
 
@@ -66,6 +67,8 @@ export class ExoServer implements IExoServer {
 
   private appBuilder!: Constructor<any>;
   private appConfigs!: any;
+
+  private koaAppRef!: Koa;
 
   constructor();
   constructor(appBuilder: Constructor<any>);
@@ -270,6 +273,7 @@ export class ExoServer implements IExoServer {
     this.initConfigCollection();
     this.initInjectService();
     this.initContextProvider();
+    this.initKoaAppProvider();
     this.initProcedureQueue();
   }
 
@@ -285,6 +289,7 @@ export class ExoServer implements IExoServer {
     const { onStart = undefined, onError = undefined } = events || {};
     new (this.appBuilder || Astroboy)(this.appConfigs || {})
       .on("start", (app: Koa) => {
+        this.koaAppRef = app;
         logActions(this, [
           () => (this.logger = new SimpleLogger(this.configs)),
           () => {
@@ -375,6 +380,21 @@ export class ExoServer implements IExoServer {
   }
 
   /**
+   * ## 初始化Koa.Application服务
+   * @description
+   * @author Big Mogician
+   * @private
+   * @memberof Server
+   */
+  private initKoaAppProvider() {
+    this.singleton(AstroboyApp, () => {
+      const appRef = new AstroboyApp();
+      appRef["_app"] = this.koaAppRef;
+      return appRef;
+    });
+  }
+
+  /**
    * ## 初始化上下文服务
    * @description
    * @author Big Mogician
@@ -401,12 +421,6 @@ export class ExoServer implements IExoServer {
    * @memberof Server
    */
   private initInjectService() {
-    // this.scoped(InjectService, (scopeId?: ScopeID) => ({
-    //   get: (token: InjectToken<any>) => this.di.get(token, scopeId),
-    //   INTERNAL_dispose: () => this.di.dispose(scopeId),
-    //   scopeId
-    // }));
-    // 替换原来的InjectService，使用di提供的原生Injector
     this.scoped(InjectService, [[Injector], (injector: Injector) => injector]);
   }
 
