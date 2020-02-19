@@ -29,7 +29,7 @@ export {
   Deserialize,
   Extends
 } from "./plugins/typed-serializer";
-export { NUNJUNKS_OPTIONS } from "./plugins/nunjunks";
+export { NUNJUNKS_OPTIONS, Nunjucks } from "./plugins/nunjunks";
 export { SIMPLE_LOGGER_OPTIONS } from "./plugins/simple-logger";
 
 export { Configs, InjectScope } from "./services/Configs";

@@ -24,7 +24,8 @@ import {
 import {
   defaultNunjunksOptions,
   NUNJUNKS_OPTIONS,
-  NunjunksEngine
+  NunjunksEngine,
+  Nunjucks
 } from "../plugins/nunjunks";
 import {
   defaultSimpleLoggerOptions,
@@ -170,6 +171,7 @@ export class ExoServer implements IExoServer {
     this.singleton(SimpleLogger);
     // 允许被装饰器复写
     this.directInject(InjectScope.Scope, [NunjunksEngine]);
+    this.directInject(InjectScope.Singleton, [Nunjucks]);
     this.directInject(InjectScope.Scope, [Render]);
   }
 
