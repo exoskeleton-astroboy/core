@@ -6,6 +6,8 @@ import { RenderResult } from "../results/render";
 import { IResult } from "../typings/IResult";
 import { resolveKeys } from "../utils";
 import { AstroboyContext } from "./AstroboyContext";
+import { Configs } from "./Configs";
+import { InjectService } from "./Injector";
 
 // tslint:disable: member-ordering
 
@@ -31,7 +33,7 @@ export namespace Render {
     getView(options: Partial<G>): { [prop: string]: any };
     getView(key: string): any;
     getView(key: string, options: Partial<G>): any;
-    render(path: string, state?: Record<string, any>): IResult;
+    render(path: string, state?: Record<string, any>): Promise<void>;
   }
 }
 
@@ -54,7 +56,10 @@ export class Render<
     return this._views;
   }
 
-  constructor(protected context: AstroboyContext) {
+  constructor(
+    protected context: AstroboyContext,
+    protected injector: InjectService
+  ) {
     this.init();
   }
 
@@ -120,8 +125,12 @@ export class Render<
     return this.views;
   }
 
-  public render(path: string, state = {}) {
+  public async render(path: string, state = {}) {
     this.setView(state);
-    return new RenderResult({ path });
+    const result = new RenderResult({ path });
+    this.context.ctx.body = await (<IResult>result).toResult({
+      injector: this.injector,
+      configs: this.injector.get(Configs),
+    });
   }
 }
