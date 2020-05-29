@@ -2,7 +2,7 @@ import { Environment, FileSystemLoader } from "nunjucks";
 import { Injectable } from "../../decorators/injectable";
 import { Configs } from "../../services/Configs";
 import { Render } from "../../services/Render";
-import { IViewEngine, IGlobalViewEngine } from "../../typings/IViewEngine";
+import { IGlobalViewEngine, IViewEngine } from "../../typings/IViewEngine";
 import { INunjunksRenderOptions, NUNJUNKS_OPTIONS } from "./options";
 
 @Injectable()
@@ -17,7 +17,7 @@ export class Nunjucks implements IGlobalViewEngine {
     return (
       this["@loader"] ||
       (this["@loader"] = new FileSystemLoader(this.configs.root, {
-        noCache: !this.configs.cache
+        noCache: !this.configs.cache,
       }))
     );
   }
@@ -25,13 +25,6 @@ export class Nunjucks implements IGlobalViewEngine {
   private "@loader": FileSystemLoader;
 
   constructor(private cfg: Configs) {}
-
-  protected createEnv(configs?: INunjunksRenderOptions) {
-    return new Environment(
-      this.loader,
-      !configs ? this.configs : { ...this.configs, ...configs }
-    );
-  }
 
   public async render(
     name: string,
@@ -47,6 +40,13 @@ export class Nunjucks implements IGlobalViewEngine {
     configs?: any
   ): Promise<string> {
     return this.createEnv(configs || {}).renderString(tpl, state || {});
+  }
+
+  protected createEnv(configs?: INunjunksRenderOptions) {
+    return new Environment(
+      this.loader,
+      !configs ? this.configs : { ...this.configs, ...configs }
+    );
   }
 }
 

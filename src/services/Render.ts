@@ -2,6 +2,8 @@ import isPlainObject from "lodash/isPlainObject";
 import set from "lodash/set";
 import { Injectable } from "../decorators/injectable";
 import { JsonResolvers } from "../results/json";
+import { RenderResult } from "../results/render";
+import { IResult } from "../typings/IResult";
 import { resolveKeys } from "../utils";
 import { AstroboyContext } from "./AstroboyContext";
 
@@ -29,6 +31,7 @@ export namespace Render {
     getView(options: Partial<G>): { [prop: string]: any };
     getView(key: string): any;
     getView(key: string, options: Partial<G>): any;
+    render(path: string, state?: Record<string, any>): IResult;
   }
 }
 
@@ -91,7 +94,7 @@ export class Render<
         ...this._views,
         ...(toSnake
           ? resolveKeys(JsonResolvers.snakecase, toSave || {})
-          : toSave || {})
+          : toSave || {}),
       };
     } else {
       set(
@@ -115,5 +118,10 @@ export class Render<
       return this.views[a01];
     }
     return this.views;
+  }
+
+  public render(path: string, state = {}) {
+    this.setView(state);
+    return new RenderResult({ path });
   }
 }
