@@ -4,7 +4,7 @@ import {
   Injector,
   InjectScope,
   ReadonlyDIContainer,
-  ScopeID
+  ScopeID,
 } from "@bonbons/di";
 import Astroboy from "astroboy";
 import Koa from "koa";
@@ -19,20 +19,21 @@ import {
   JSON_RESULT_OPTIONS,
   RENDER_RESULT_OPTIONS,
   SCOPE_TRACE_OPTIONS,
-  STATIC_RESOLVER
+  STATIC_RESOLVER,
 } from "../options";
 import {
   defaultNunjunksOptions,
+  Nunjucks,
   NUNJUNKS_OPTIONS,
   NunjunksEngine,
-  Nunjucks
 } from "../plugins/nunjunks";
 import {
   defaultSimpleLoggerOptions,
   SIMPLE_LOGGER_OPTIONS,
-  SimpleLogger
+  SimpleLogger,
 } from "../plugins/simple-logger";
 import { TypedSerializer } from "../plugins/typed-serializer";
+import { AstroboyApp } from "../services/AstroboyApp";
 import { AstroboyContext } from "../services/AstroboyContext";
 import { ConfigReader } from "../services/ConfigReader";
 import { Configs, RealConfigCollection } from "../services/Configs";
@@ -44,7 +45,6 @@ import { Scope } from "../services/Scope";
 import { getScopeId, GlobalDI, optionAssign } from "../utils";
 import { DIPair, IExoServer } from "./contract";
 import { logActions } from "./log";
-import { AstroboyApp } from "../services/AstroboyApp";
 
 // tslint:disable: member-ordering
 
@@ -227,10 +227,10 @@ export class ExoServer implements IExoServer {
    * @memberof Server
    */
   protected resolveBundles() {
-    InnerBundle["@singletons"].forEach(args => this.singleton(...args));
-    InnerBundle["@scopeds"].forEach(args => this.scoped(...args));
-    InnerBundle["@uniques"].forEach(args => this.unique(...args));
-    InnerBundle["@options"].forEach(args => this.option(...args));
+    InnerBundle["@singletons"].forEach((args) => this.singleton(...args));
+    InnerBundle["@scopeds"].forEach((args) => this.scoped(...args));
+    InnerBundle["@uniques"].forEach((args) => this.unique(...args));
+    InnerBundle["@options"].forEach((args) => this.option(...args));
   }
 
   /**
@@ -303,7 +303,7 @@ export class ExoServer implements IExoServer {
             this.resolveBundles();
             this.resolveInjections();
           },
-          () => onStart && onStart(app, { get: this.di.get.bind(this.di) })
+          () => onStart && onStart(app, { get: this.di.get.bind(this.di) }),
         ]);
       })
       .on("error", (error: any, ctx: any) => {
@@ -377,7 +377,7 @@ export class ExoServer implements IExoServer {
       token,
       depts,
       imp,
-      scope
+      scope,
     });
   }
 
@@ -435,7 +435,7 @@ export class ExoServer implements IExoServer {
    */
   private initConfigCollection() {
     this.singleton(Configs, () => ({
-      get: this.configs.get.bind(this.configs)
+      get: this.configs.get.bind(this.configs),
     }));
   }
 

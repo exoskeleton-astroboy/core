@@ -34,6 +34,7 @@ export namespace Render {
     getView(key: string): any;
     getView(key: string, options: Partial<G>): any;
     render(path: string, state?: Record<string, any>): Promise<void>;
+    renderString(template: string, state?: Record<string, any>): Promise<void>;
   }
 }
 
@@ -128,6 +129,15 @@ export class Render<
   public async render(path: string, state = {}) {
     this.setView(state);
     const result = new RenderResult({ path });
+    this.context.ctx.body = await (<IResult>result).toResult({
+      injector: this.injector,
+      configs: this.injector.get(Configs),
+    });
+  }
+
+  public async renderString(template: string, state = {}) {
+    this.setView(state);
+    const result = new RenderResult({ tplStr: template });
     this.context.ctx.body = await (<IResult>result).toResult({
       injector: this.injector,
       configs: this.injector.get(Configs),
