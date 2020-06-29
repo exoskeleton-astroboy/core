@@ -2,7 +2,7 @@ import path from "path";
 import { createOptions } from "../../typings/IConfigs";
 
 export interface INunjunksRenderOptions {
-  root: string;
+  root: string | string[];
   autoescape: true;
   throwOnUndefined: false;
   trimBlocks: false;
@@ -16,7 +16,7 @@ export const defaultNunjunksOptions: INunjunksRenderOptions = {
   autoescape: true,
   throwOnUndefined: false,
   trimBlocks: false,
-  lstripBlocks: false
+  lstripBlocks: false,
 };
 
 export const NUNJUNKS_OPTIONS = createOptions<INunjunksRenderOptions>(
