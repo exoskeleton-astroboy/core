@@ -7,13 +7,14 @@ export const config: IConfig = {
   whiteSpace: "  ",
   rootPath: ".",
   outDist: "dist",
-  useYarn: true,
-  outTransform: json => ({
+  useYarn: false,
+  register: "https://registry.npmjs.org",
+  outTransform: (json) => ({
     ...json,
     main: "./index.js",
     types: "./index.d.ts",
     scripts: undefined,
     nyc: undefined,
-    devDependencies: undefined
-  })
+    devDependencies: undefined,
+  }),
 };

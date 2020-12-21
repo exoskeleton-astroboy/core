@@ -1,6 +1,6 @@
 {
   "name": "@exoskeleton/core",
-  "version": "0.2.6",
+  "version": "0.3.0",
   "main": "src/index.ts",
   "repository": "https://github.com/exoskeleton-astroboy/core.git",
   "author": "Big Mogician <bigmogician@outlook.com>",
@@ -37,7 +37,7 @@
     "typescript": "^3.4.5"
   },
   "peerDependencies": {
-    "astroboy": "^2.0.0",
-    "astroboy-router": "^2.2.1"
+    "astroboy": ">=2.0.0",
+    "astroboy-router": ">=2.2.1"
   }
 }
