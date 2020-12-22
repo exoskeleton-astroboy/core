@@ -293,7 +293,7 @@ astroboy-router@^2.2.1:
     reflect-metadata "0.1.12"
     tslib "1.9.3"
 
-astroboy@^2.0.0:
+astroboy@>=2.0.0:
   version "2.2.1"
   resolved "https://registry.npm.taobao.org/astroboy/download/astroboy-2.2.1.tgz#07f3849350f9e362aedb099df5d15165bf9c3c29"
   integrity sha1-B/OEk1D542Ku2wmd9dFRZb+cPCk=
