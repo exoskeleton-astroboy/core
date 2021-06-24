@@ -5,7 +5,7 @@ import {
   IConfigCollection,
   ImplementType,
   ReadonlyDIContainer,
-  ScopeID
+  ScopeID,
 } from "@bonbons/di";
 import { SimpleLogger } from "../plugins/simple-logger";
 import { InjectService } from "../services/Injector";
@@ -58,19 +58,16 @@ export interface IExoServer {
     srv: TImplement
   ): this;
   use<TInject>(...procedure: Constructor<TInject>[]): this;
-  run(
-    events?: Partial<{
-      onStart: (
-        app: any,
-        injector: Readonly<ReadonlyDIContainer<ScopeID>>
-      ) => void;
-      onError: (error: any, injector: InjectService.Contract) => void;
-    }>
-  ): void;
+  run(events?: Partial<IStartAppEvent>): void;
 }
 
 export interface IInternalExoServer extends IExoServer {
   di: DIContainer<ScopeID>;
   configs: IConfigCollection;
   logger: SimpleLogger;
+}
+
+export interface IStartAppEvent {
+  onStart: (app: any, injector: Readonly<ReadonlyDIContainer<ScopeID>>) => void;
+  onError: (error: any, injector: InjectService.Contract) => void;
 }

@@ -43,7 +43,7 @@ import { ProcedureQueue } from "../services/ProcedureQueue";
 import { Render } from "../services/Render";
 import { Scope } from "../services/Scope";
 import { getScopeId, GlobalDI, optionAssign } from "../utils";
-import { DIPair, IExoServer } from "./contract";
+import { DIPair, IExoServer, IStartAppEvent } from "./contract";
 import { logActions } from "./log";
 
 // tslint:disable: member-ordering
@@ -117,15 +117,7 @@ export class ExoServer implements IExoServer {
     return this;
   }
 
-  public run(
-    events?: Partial<{
-      onStart: (
-        app: any,
-        injector: Readonly<ReadonlyDIContainer<ScopeID>>
-      ) => void;
-      onError: (error: any, injector: InjectService) => void;
-    }>
-  ) {
+  public run(events?: Partial<IStartAppEvent>) {
     this.init();
     this.finalInjectionsInit();
     this.startApp(events);
@@ -279,15 +271,7 @@ export class ExoServer implements IExoServer {
     this.initProcedureQueue();
   }
 
-  private startApp(
-    events?: Partial<{
-      onStart: (
-        app: any,
-        injector: Readonly<ReadonlyDIContainer<ScopeID>>
-      ) => void;
-      onError: (error: any, injector: InjectService) => void;
-    }>
-  ) {
+  private startApp(events?: Partial<IStartAppEvent>) {
     const { onStart = undefined, onError = undefined } = events || {};
     new (this.appBuilder || Astroboy)(this.appConfigs || {})
       .on("start", (app: Koa) => {
