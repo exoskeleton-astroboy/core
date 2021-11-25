@@ -3,7 +3,6 @@ import {
   DIContainer,
   Injector,
   InjectScope,
-  ReadonlyDIContainer,
   ScopeID,
 } from "@bonbons/di";
 import Astroboy from "astroboy";
@@ -69,7 +68,7 @@ export class ExoServer implements IExoServer {
   private appBuilder!: Constructor<any>;
   private appConfigs!: any;
 
-  private koaAppRef!: Koa;
+  private koaAppRef!: Koa & { run: () => void };
 
   constructor();
   constructor(appBuilder: Constructor<any>);
@@ -273,9 +272,11 @@ export class ExoServer implements IExoServer {
 
   private startApp(events?: Partial<IStartAppEvent>) {
     const { onStart = undefined, onError = undefined } = events || {};
-    new (this.appBuilder || Astroboy)(this.appConfigs || {})
+    this.koaAppRef = new (this.appBuilder || Astroboy)(this.appConfigs || {});
+    this.koaAppRef.run();
+    this.koaAppRef
       .on("start", (app: Koa) => {
-        this.koaAppRef = app;
+        this.koaAppRef = <any>app;
         logActions(this, [
           () => (this.logger = new SimpleLogger(this.configs)),
           () => {
