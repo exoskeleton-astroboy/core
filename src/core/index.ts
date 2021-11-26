@@ -1,13 +1,13 @@
 import {
   createBuildHelper,
-  createLifeHooks
+  createLifeHooks,
 } from "astroboy-router/entrance/build";
 import {
   IArgSolutionsContext,
   IParseArgsOptions,
   IPipeResolveContext,
   IRouteBuildContext,
-  IRouteDescriptor
+  IRouteDescriptor,
 } from "astroboy-router/metadata";
 import { STATIC_RESOLVER } from "../options/typed-serialize.options";
 import { Configs } from "../services/Configs";
@@ -41,7 +41,7 @@ function fetchArgs(delegator: any): IArgSolutionsContext {
   return {
     query: context.ctx.query || {},
     params: context.ctx.params || {},
-    body: context.ctx.request.body || {}
+    body: context.ctx.request.body || {},
   };
 }
 
@@ -68,7 +68,7 @@ export function onBuild(
   const pipeContext: IBindContext = { pipes, closeOnThrows };
   const hooks = createLifeHooks(context);
   const routeLogic = createRouteMethodInvoke(context, descriptor.value);
-  descriptor.value = async function() {
+  descriptor.value = async function () {
     const injector: InjectService = (<any>this)[InjectorGetter];
     const queues = injector.get<ProcedureQueue>(ProcedureQueue).procedures;
     for (const ctor of queues) {
@@ -92,14 +92,14 @@ export function createRouteMethodInvoke(
   source: any
 ) {
   const helpers = createBuildHelper(context);
-  return async function(this: any) {
+  return async function (this: any) {
     const injector: InjectService = (<any>this)[InjectorGetter];
     const ctx = injector.get<Context>(Context);
     const staticResolver = injector.get(Configs).get(STATIC_RESOLVER);
     const args = helpers.parseArgs.call(this, {
       fetchArgs,
       // 重新定义静态类型处理器
-      resolver: staticResolver
+      resolver: staticResolver,
     } as Partial<IParseArgsOptions>);
     const result: ICommonResultType = await source.call(this, ...args);
     if (result) resolveMethodResult(result, ctx.ctx, injector);
@@ -124,7 +124,7 @@ async function pipeOverrideInvokes(
     if (!pipes.handler) {
       throw error;
     }
-    pipes.handler(this, error);
+    pipes.handler(this, <Error>error);
     return !closeOnThrows;
   }
 }
@@ -137,7 +137,7 @@ async function resolveMethodResult(
   if ((<IResult>result).toResult) {
     ctx.body = await (<IResult>result).toResult({
       injector,
-      configs: injector.get(Configs)
+      configs: injector.get(Configs),
     });
   } else {
     ctx.body = <string>result;

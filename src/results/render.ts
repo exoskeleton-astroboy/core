@@ -2,7 +2,7 @@ import merge from "lodash/merge";
 import { ENV } from "../configs/env.config";
 import {
   IRenderResultOptions,
-  RENDER_RESULT_OPTIONS
+  RENDER_RESULT_OPTIONS,
 } from "../options/render.options";
 import { SimpleLogger } from "../plugins/simple-logger";
 import { Context } from "../services/Context";
@@ -41,7 +41,7 @@ export class RenderResult implements IResult {
       engines,
       astConf,
       engine: key,
-      configs: confs
+      configs: confs,
     } = opts;
     if (astConf && !!astConf.use) {
       return ctx.render(xpath, astConf.state, astConf.configs);
@@ -58,15 +58,19 @@ export class RenderResult implements IResult {
       const { ctx: context } = injector.get<Context<IContext>>(Context);
       const { env } = configs.get(ENV);
       const errroTitle =
-        (e.name && `模板渲染错误: ${e.name}`) || "模板渲染错误";
+        ((<Error>e).name && `模板渲染错误: ${(<Error>e).name}`) ||
+        "模板渲染错误";
       render.setView("__viewError", e);
       logger.debug(errroTitle, e);
       context.status = 500;
-      const { path: errorPath, tplStr: errorTpl, content } =
-        env === "production" ? opts.onError : opts.onDevError;
+      const {
+        path: errorPath,
+        tplStr: errorTpl,
+        content,
+      } = env === "production" ? opts.onError : opts.onDevError;
       if (errorPath) return engine.render(errorPath, confs);
       if (errorTpl) return engine.renderString(errorTpl, confs);
-      return (content && content(e)) || "Internal Server Error";
+      return (content && content(<Error>e)) || "Internal Server Error";
     }
   }
 }
