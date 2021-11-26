@@ -68,7 +68,9 @@ export class ExoServer implements IExoServer {
   private appBuilder!: Constructor<any>;
   private appConfigs!: any;
 
-  private koaAppRef!: Koa & { run: () => void };
+  private koaAppRef!: Koa & {
+    run: () => { catch: (fn: (error: any) => void) => void };
+  };
 
   constructor();
   constructor(appBuilder: Constructor<any>);
@@ -273,7 +275,10 @@ export class ExoServer implements IExoServer {
   private startApp(events?: Partial<IStartAppEvent>) {
     const { onStart = undefined, onError = undefined } = events || {};
     this.koaAppRef = new (this.appBuilder || Astroboy)(this.appConfigs || {});
-    this.koaAppRef.run();
+    this.koaAppRef.run().catch((error) => {
+      const injector = this.di.get(InjectService);
+      onError?.(error, injector);
+    });
     this.koaAppRef
       .on("start", (app: Koa) => {
         this.koaAppRef = <any>app;
@@ -294,7 +299,7 @@ export class ExoServer implements IExoServer {
       .on("error", (error: any, ctx: any) => {
         const scopeId = getScopeId(ctx);
         const injector = this.di.get(InjectService, scopeId);
-        onError && onError(error, injector);
+        onError?.(error, injector);
       });
   }
 
